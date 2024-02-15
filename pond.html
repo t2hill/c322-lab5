@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            transition: 0.3s;
+            width: 20%;
+            border-radius: 5px;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+
+        img {
+            border-radius: 5px 5px 0 0;
+        }
+
+        .container {
+            padding: 2px 16px;
+        }
+    </style>
+</head>
+<body onload="getAll()">
+    <div id="result">
+    </div>
+
+    <script>
+        let ducks = [];
+
+        async function getAll() {
+            let host = "http://localhost:8080";
+            
+            let request = {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            };
+            let response = await fetch(host + "/ducks", request);
+            let ducks = await response.json();
+
+            let pond = document.getElementById("result");
+            pond.innerHTML = "";
+
+            for (let duck of ducks) {
+                let card = document.createElement("div", {class: "card"});
+                var image = document.createElement("img");
+                image.setAttribute("src", host+"/ducks/"+duck.id+"/image");
+                let container = document.createElement("div", {class:"container"});
+                let header4 = document.createElement("h4");
+                let bold = document.createElement("b");
+                let id = document.createTextNode(duck.id);
+                let paragraph = document.createElement("p");
+                let type = document.createTextNode(duck.type);
+
+                paragraph.appendChild(type);
+                bold.appendChild(id);
+                header4.appendChild(bold);
+                container.appendChild(header4);
+                container.appendChild(paragraph);
+                card.appendChild(image);
+                card.appendChild(container);
+                pond.appendChild(card);
+            }
+
+            return result
+        }
+        
+    </script>
+</body>
+</html>
